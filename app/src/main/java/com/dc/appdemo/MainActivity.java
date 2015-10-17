@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.AlarmClock;
+import android.provider.CalendarContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,8 @@ import android.widget.Button;
 
 import org.apache.http.protocol.HTTP;
 
+import java.util.Calendar;
+
 
 public class MainActivity extends ActionBarActivity {
     public static String TAG="AppDemo";
@@ -21,6 +24,7 @@ public class MainActivity extends ActionBarActivity {
     private Button mBtnSetAlarm = null;
     private Button mBtnSendIntent = null;
     private Button mBtnSetTimer = null;
+    private Button mBtnAddCalendarEvent = null;
 
 
     @Override
@@ -41,6 +45,8 @@ public class MainActivity extends ActionBarActivity {
         mBtnSetTimer = (Button)findViewById(R.id.btn_id_set_timer);
         mBtnSetTimer.setOnClickListener(mBtnListener);
 
+        mBtnAddCalendarEvent = (Button)findViewById(R.id.btn_id_add_calendar_event);
+        mBtnAddCalendarEvent.setOnClickListener(mBtnListener);
 
     }
 
@@ -58,6 +64,8 @@ public class MainActivity extends ActionBarActivity {
                 case R.id.btn_id_set_timer:
                     startTimer("timer",5);
                     break;
+                case R.id.btn_id_add_calendar_event:
+                    break;
                 default:
                     break;
             }
@@ -65,6 +73,17 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
+    public void addEvent(String title, String location, Calendar begin, Calendar end) {
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.Events.TITLE, title)
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, begin)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 
     public void startTimer(String message, int seconds) {
         Intent intent = new Intent(AlarmClock.ACTION_SET_TIMER)

@@ -28,4 +28,12 @@
         android:id="@+id/btn_id_set_timer"
         android:layout_below="@+id/btn_id_send_intent"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Calendar Event"
+        android:id="@+id/btn_id_add_calendar_event"
+        android:layout_below="@+id/btn_id_set_timer"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

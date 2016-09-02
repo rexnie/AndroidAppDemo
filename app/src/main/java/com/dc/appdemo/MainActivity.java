@@ -1,12 +1,13 @@
 package com.dc.appdemo;
 
 import android.content.Intent;
+import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,11 +22,31 @@ import java.util.Calendar;
 public class MainActivity extends ActionBarActivity {
     public static String TAG="AppDemo";
     private PackageManager mPm = null;
+    public View.OnClickListener mBtnListener = new View.OnClickListener() {
+
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_id_set_alarm:
+                    createAlarm("work", 8, 13);
+                    break;
+                case R.id.btn_id_send_intent:
+                    sendIntent();
+                    break;
+                case R.id.btn_id_set_timer:
+                    startTimer("timer", 5);
+                    break;
+                case R.id.btn_id_add_calendar_event:
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    };
     private Button mBtnSetAlarm = null;
     private Button mBtnSendIntent = null;
     private Button mBtnSetTimer = null;
     private Button mBtnAddCalendarEvent = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,29 +70,6 @@ public class MainActivity extends ActionBarActivity {
         mBtnAddCalendarEvent.setOnClickListener(mBtnListener);
 
     }
-
-
-    public View.OnClickListener mBtnListener = new  View.OnClickListener() {
-
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btn_id_set_alarm:
-                    createAlarm("work",8, 13);
-                    break;
-                case R.id.btn_id_send_intent:
-                    sendIntent();
-                    break;
-                case R.id.btn_id_set_timer:
-                    startTimer("timer",5);
-                    break;
-                case R.id.btn_id_add_calendar_event:
-                    break;
-                default:
-                    break;
-            }
-
-        }
-    };
 
     public void addEvent(String title, String location, Calendar begin, Calendar end) {
         Intent intent = new Intent(Intent.ACTION_INSERT)
@@ -138,6 +136,15 @@ public class MainActivity extends ActionBarActivity {
             Log.d(TAG, "system version lower than 4.4");
             return false;
         }
+
+        FeatureInfo[] featureInfo = mPm.getSystemAvailableFeatures();
+        Log.d(TAG, "getSystemAvailableFeatures returns " + featureInfo.length + " items:");
+        int i = 0;
+        for (FeatureInfo fi : featureInfo) {
+            Log.d(TAG, i + ":" + fi);
+            i++;
+        }
+
         return true;
     }
 

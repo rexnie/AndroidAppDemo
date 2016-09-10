@@ -1,11 +1,15 @@
 package com.dc.appdemo;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
@@ -28,6 +32,20 @@ public class MainActivity extends AppCompatActivity {
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
     public static String TAG="AppDemo";
     private PackageManager mPm;
+    private IRemoteService mAidlService;
+    private boolean mIsServiceBound;
+    private ServiceConnection mAidlConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d(TAG, "onServiceConnected,ComponentName=" + name);
+            mAidlService = IRemoteService.Stub.asInterface(service);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d(TAG, "onServiceDisconnected");
+        }
+    };
     public View.OnClickListener mBtnListener = new View.OnClickListener() {
 
         public void onClick(View v) {
@@ -46,16 +64,20 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_id_rt_permissions:
                     requestPermission();
                     break;
+                case R.id.btn_aidl_bind:
+                    bindAidlService();
+                    break;
+                case R.id.btn_aidl_unbind:
+                    unBindAidlService();
+                    break;
+                case R.id.btn_call_service:
+                    callService();
+                    break;
                 default:
                     break;
             }
         }
     };
-    private Button mBtnSetAlarm;
-    private Button mBtnSendIntent;
-    private Button mBtnSetTimer;
-    private Button mBtnAddCalendarEvent;
-    private Button mBtnRuntimePermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,21 +90,54 @@ public class MainActivity extends AppCompatActivity {
         initViews();
     }
 
+    private void newButtonAndSetListener(int resId) {
+        Button btn = (Button) findViewById(resId);
+        btn.setOnClickListener(mBtnListener);
+    }
+
     private void initViews() {
-        mBtnSetAlarm = (Button)findViewById(R.id.btn_id_set_alarm);
-        mBtnSetAlarm.setOnClickListener(mBtnListener);
+        newButtonAndSetListener(R.id.btn_id_set_alarm);
+        newButtonAndSetListener(R.id.btn_id_send_intent);
+        newButtonAndSetListener(R.id.btn_id_set_timer);
+        newButtonAndSetListener(R.id.btn_id_add_calendar_event);
+        newButtonAndSetListener(R.id.btn_id_rt_permissions);
+        newButtonAndSetListener(R.id.btn_aidl_bind);
+        newButtonAndSetListener(R.id.btn_aidl_unbind);
+        newButtonAndSetListener(R.id.btn_call_service);
+    }
 
-        mBtnSendIntent = (Button)findViewById(R.id.btn_id_send_intent);
-        mBtnSendIntent.setOnClickListener(mBtnListener);
+    private void callService() {
+        try {
+            int servicePid;
+            int anInt = 12;
+            long aLong = 314159L;
+            float aFloat = 3.14f;
+            double aDouble = 3.14;
+            String aString = "Client";
+            mAidlService.basicTypes(anInt, aLong, mIsServiceBound, aFloat, aDouble, aString);
+            Log.d(TAG, "after basicTypes:");
+            Log.d(TAG, "aLong=" + aLong + ",aDouble=" + aDouble + ",aString=" + aString);
+            servicePid = mAidlService.getPid();
+            Log.d(TAG, "servicePid=" + servicePid);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
-        mBtnSetTimer = (Button)findViewById(R.id.btn_id_set_timer);
-        mBtnSetTimer.setOnClickListener(mBtnListener);
+    private void bindAidlService() {
+        if (mIsServiceBound == false) {
+            bindService(new Intent(this, RemoteService.class),
+                    mAidlConnection, BIND_AUTO_CREATE);
+            mIsServiceBound = true;
+        }
+    }
 
-        mBtnAddCalendarEvent = (Button)findViewById(R.id.btn_id_add_calendar_event);
-        mBtnAddCalendarEvent.setOnClickListener(mBtnListener);
-
-        mBtnRuntimePermission = (Button) findViewById(R.id.btn_id_rt_permissions);
-        mBtnRuntimePermission.setOnClickListener(mBtnListener);
+    private void unBindAidlService() {
+        if (mIsServiceBound) {
+            unbindService(mAidlConnection);
+            mIsServiceBound = false;
+            mAidlService = null;
+        }
     }
 
     private void requestPermission() {
@@ -218,6 +273,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unBindAidlService();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

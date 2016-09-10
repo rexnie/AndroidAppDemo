@@ -38,13 +38,38 @@
             android:id="@+id/btn_id_add_calendar_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Calendar Event" />
+            android:text="AddCalendarEvent" />
 
         <Button
             android:id="@+id/btn_id_rt_permissions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Demo runtime permissions" />
+            android:text="RuntimePermissions" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_aidl_bind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BindAidlService" />
+
+        <Button
+            android:id="@+id/btn_aidl_unbind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UnbindAidlService" />
+
+        <Button
+            android:id="@+id/btn_call_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Call" />
     </LinearLayout>
 
 

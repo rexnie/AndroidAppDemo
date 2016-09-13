@@ -117,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
             mAidlService.basicTypes(anInt, aLong, mIsServiceBound, aFloat, aDouble, aString);
             Log.d(TAG, "after basicTypes:");
             Log.d(TAG, "aLong=" + aLong + ",aDouble=" + aDouble + ",aString=" + aString);
+
+            Log.d(TAG, "doWorkMoreTime begins");
+            mAidlService.doWorkMoreTime(3000);
+            Log.d(TAG, "doWorkMoreTime returns");
+
             servicePid = mAidlService.getPid();
             Log.d(TAG, "servicePid=" + servicePid);
         } catch (RemoteException e) {

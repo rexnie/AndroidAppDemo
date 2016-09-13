@@ -12,4 +12,6 @@ interface IRemoteService {
             double aDouble, String aString);
 
     int getPid();
+
+    oneway void doWorkMoreTime(int timeInMs);
 }

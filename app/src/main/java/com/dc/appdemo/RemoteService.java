@@ -28,6 +28,17 @@ public class RemoteService extends Service {
             Log.d(TAG, "in Stub.getPid");
             return Process.myPid();
         }
+
+        @Override
+        public void doWorkMoreTime(int timeInMs) throws RemoteException {
+            Log.d(TAG, "doWorkMoreTime in servie is called");
+            try {
+                Thread.sleep(timeInMs);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "doWorkMoreTime");
+        }
     };
 
     @Override

@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_call_service:
                     callService();
                     break;
+                case R.id.btn_color_state:
+                    break;
                 default:
                     break;
             }
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         newButtonAndSetListener(R.id.btn_aidl_bind);
         newButtonAndSetListener(R.id.btn_aidl_unbind);
         newButtonAndSetListener(R.id.btn_call_service);
+        newButtonAndSetListener(R.id.btn_color_state);
     }
 
     private void callService() {

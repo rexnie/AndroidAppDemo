@@ -83,6 +83,12 @@
             android:layout_height="wrap_content"
             android:textColor="@color/button_color_state"
             android:text="@string/color_state_list"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/layer_list"
+            android:background="@color/colorDefault"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -89,6 +89,12 @@
             android:layout_height="100dp"
             android:src="@drawable/layer_list"
             android:background="@color/colorDefault"/>
+
+        <Button
+            android:id="@+id/btn_state_list_drawable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/state_list_drawable"/>
     </LinearLayout>
 
 </LinearLayout>

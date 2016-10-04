@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private PackageManager mPm;
     private IRemoteService mAidlService;
     private boolean mIsServiceBound;
+    private ImageView mClipImageView;
+    private AsyncTask<Void, Integer, Void> mUpdateDrawableLevelAsyncTask;
     private ServiceConnection mAidlConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -75,6 +80,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.btn_color_state:
                     break;
+                case R.id.iv_clip_drawable:
+                    if (mUpdateDrawableLevelAsyncTask != null) {
+                        mUpdateDrawableLevelAsyncTask.cancel(true);
+                        mUpdateDrawableLevelAsyncTask = null;
+                    } else {
+                        mUpdateDrawableLevelAsyncTask = new UpdateDrawableLevelTask();
+                        mUpdateDrawableLevelAsyncTask.execute();
+                    }
                 default:
                     break;
             }
@@ -107,7 +120,58 @@ public class MainActivity extends AppCompatActivity {
         newButtonAndSetListener(R.id.btn_aidl_unbind);
         newButtonAndSetListener(R.id.btn_call_service);
         newButtonAndSetListener(R.id.btn_color_state);
+
+        mClipImageView = (ImageView) findViewById(R.id.iv_clip_drawable);
+        mClipImageView.setOnClickListener(mBtnListener);
     }
+
+    private class UpdateDrawableLevelTask extends AsyncTask<Void, Integer, Void> {
+        private boolean isReady;
+        protected void onPreExecute () {
+            isReady = true;
+            if (mClipImageView == null) {
+                mClipImageView = (ImageView)
+                        MainActivity.this.findViewById(R.id.iv_clip_drawable);
+                if (mClipImageView.getBackground() == null) {
+                    Log.e(TAG, "drawable is null");
+                    isReady = false;
+                }
+            }
+            Log.d(TAG, "onPreExecute, isReady= " + isReady);
+        }
+
+        protected Void doInBackground(Void... v) {
+            while(true) {
+                if (!isReady) {
+                    Log.i(TAG, "AsyncTask is not ready");
+                    return null;
+                }
+                if (isCancelled()) {
+                    Log.i(TAG, "AsyncTask is cancelled");
+                    break;
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Log.i(TAG, "Task is cancel normally");
+                    e.printStackTrace();
+                }
+                publishProgress((int) 1000);
+            }
+            return null;
+        }
+
+        protected void onProgressUpdate(Integer... i) {
+            Drawable drawable = mClipImageView.getBackground();
+
+            if (drawable.getLevel() + i[0].intValue() >= 10000) {
+                drawable.setLevel(0);
+            }
+            drawable.setLevel(drawable.getLevel() + i[0].intValue());
+        }
+    }
+
+
 
     private void callService() {
         try {

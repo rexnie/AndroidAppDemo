@@ -106,5 +106,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/iv_clip_drawable"
             android:background="@drawable/clip"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ShapeDrawable"
+            android:background="@drawable/button_custom"/>
     </LinearLayout>
 </LinearLayout>

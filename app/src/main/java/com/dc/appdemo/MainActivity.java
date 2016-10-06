@@ -1,11 +1,13 @@
 package com.dc.appdemo;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +27,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
@@ -32,8 +39,8 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
     public static final int PERMISSION_REQUEST_CODE_EXTERNAL_STORAGE_WRITE = 10;
     private static final String PER_WRITE_SDCARD =
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-    public static String TAG="AppDemo";
+            Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    public static String TAG = "AppDemo";
     private PackageManager mPm;
     private IRemoteService mAidlService;
     private boolean mIsServiceBound;
@@ -93,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +115,9 @@ public class MainActivity extends AppCompatActivity {
 
         check_devices();
         initViews();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void newButtonAndSetListener(int resId) {
@@ -125,9 +140,46 @@ public class MainActivity extends AppCompatActivity {
         mClipImageView.setOnClickListener(mBtnListener);
     }
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
     private class UpdateDrawableLevelTask extends AsyncTask<Void, Integer, Void> {
         private boolean isReady;
-        protected void onPreExecute () {
+
+        protected void onPreExecute() {
             isReady = true;
             if (mClipImageView == null) {
                 mClipImageView = (ImageView)
@@ -141,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected Void doInBackground(Void... v) {
-            while(true) {
+            while (true) {
                 if (!isReady) {
                     Log.i(TAG, "AsyncTask is not ready");
                     return null;
@@ -170,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
             drawable.setLevel(drawable.getLevel() + i[0].intValue());
         }
     }
-
 
 
     private void callService() {

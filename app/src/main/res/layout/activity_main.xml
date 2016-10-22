@@ -111,5 +111,9 @@
             android:layout_height="wrap_content"
             android:text="ShapeDrawable"
             android:background="@drawable/button_custom"/>
+        <com.dc.appdemo.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CustomTextView"/>
     </LinearLayout>
 </LinearLayout>

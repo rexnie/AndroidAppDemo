@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dc.appdemo.TopBar xmlns:android="http://schemas.android.com/apk/res/android"
+                       xmlns:custom="http://schemas.android.com/apk/res-auto"
+                       android:layout_width="match_parent"
+                       android:layout_height="40dp"
+                       android:id="@+id/topbar"
+                       custom:leftText="Back"
+                       custom:leftBackground="@color/common_plus_signin_btn_text_light_focused"
+                       custom:leftTextColor="@color/colorBlue"
+
+                       custom:rightText="Edit"
+                       custom:rightBackground="@color/common_plus_signin_btn_text_light_focused"
+                       custom:rightTextColor="@color/colorBlue"
+
+                       custom:topbarTitle="自定义标题"
+                       custom:topbarTitleTextColor="@color/colorBlue"
+                       custom:topbarTitleTextSize="8dp">
+</com.dc.appdemo.TopBar>

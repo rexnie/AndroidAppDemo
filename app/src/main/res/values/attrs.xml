@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--为View TopBar提供可自定义的属性-->
+    <declare-styleable name="TopBar">
+        <attr name="topbarTitle" format="string"/>
+        <attr name="topbarTitleTextSize" format="dimension"/>
+        <attr name="topbarTitleTextColor" format="color"/>
+        <attr name="leftTextColor" format="color"/>
+        <attr name="leftBackground" format="reference|color"/>
+        <attr name="leftText" format="string"/>
+        <attr name="rightTextColor" format="color"/>
+        <attr name="rightBackground" format="reference|color"/>
+        <attr name="rightText" format="string"/>
+    </declare-styleable>
+</resources>

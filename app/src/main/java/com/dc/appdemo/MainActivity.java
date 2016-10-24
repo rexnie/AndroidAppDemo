@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
                         mUpdateDrawableLevelAsyncTask = new UpdateDrawableLevelTask();
                         mUpdateDrawableLevelAsyncTask.execute();
                     }
+                case R.id.btn_topbar:
+                    startActivity(new Intent(MainActivity.this, TopbarActivity.class));
                 default:
                     break;
             }
@@ -138,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
 
         mClipImageView = (ImageView) findViewById(R.id.iv_clip_drawable);
         mClipImageView.setOnClickListener(mBtnListener);
+
+        newButtonAndSetListener(R.id.btn_topbar);
     }
 
     /**

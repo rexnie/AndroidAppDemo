@@ -35,6 +35,13 @@
             android:label="@string/title_activity_main_activity2">
         </activity>
 
+        <activity android:name=".TopbarActivity">
+        </activity>
+
+        <activity
+            android:name=".CustomViewActivity"
+            android:label="@string/custom_view"/>
+
         <service
             android:name=".RemoteService"
             android:process=":RemoteService"/>
@@ -46,8 +53,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
 
-        <activity android:name=".TopbarActivity">
-        </activity>
     </application>
 
 </manifest>

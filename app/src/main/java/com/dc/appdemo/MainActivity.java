@@ -97,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 case R.id.btn_topbar:
                     startActivity(new Intent(MainActivity.this, TopbarActivity.class));
+                    break;
+                case R.id.btn_custom_view:
+                    startActivity(new Intent(MainActivity.this, CustomViewActivity.class));
+                    break;
                 default:
                     break;
             }
@@ -142,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         mClipImageView.setOnClickListener(mBtnListener);
 
         newButtonAndSetListener(R.id.btn_topbar);
+        newButtonAndSetListener(R.id.btn_custom_view);
     }
 
     /**

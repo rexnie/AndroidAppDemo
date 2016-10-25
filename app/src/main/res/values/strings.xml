@@ -6,4 +6,5 @@
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
     <string name="chooser_title">Chooser a activiy</string>
     <string name="color_state_list">ColorStateList</string>
+    <string name="custom_view">CustomView</string>
 </resources>
